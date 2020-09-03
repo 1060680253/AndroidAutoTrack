@@ -1,0 +1,14 @@
+apply plugin: 'groovy'
+apply from: '../upload_bintray.gradle'
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+}
+
+dependencies {
+    implementation 'org.apache.httpcomponents:httpcore:4.2.2'
+    implementation 'org.apache.httpcomponents:httpclient:4.2.2'
+    implementation 'net.dongliu:apk-parser:2.6.4'
+    compileOnly 'com.android.tools.build:gradle:3.0.0-beta5'
+
+}

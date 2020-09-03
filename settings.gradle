@@ -1,2 +1,3 @@
+include ':fir-publisher'
 include ':app', ':AutoTrackPlugin', ':testmodule', ':double_tap_plugin'
 include ':BasePlugin'
