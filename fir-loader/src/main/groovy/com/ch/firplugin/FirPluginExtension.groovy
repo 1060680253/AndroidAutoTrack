@@ -4,6 +4,7 @@ class FirPluginExtension {
     String changeLog = ""
     boolean upload = false
     String version = null
+    boolean attachAssembleRelease = true
 
     Map<String, String> apiTokens
 

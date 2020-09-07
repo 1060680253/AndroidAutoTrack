@@ -100,7 +100,7 @@ class FirPlugin implements Plugin<Project> {
                 LOG.error "Publish apk Failed!"
             }
         }
-        if(config.attachAssembleRelease==null||config.attachAssembleRelease){
+        if(config.attachAssembleRelease){
             project.tasks.getByPath("assemble${name}Release").dependsOn firTask
         }
         firTask.dependsOn project.tasks.getByPath("package${name}Release")
