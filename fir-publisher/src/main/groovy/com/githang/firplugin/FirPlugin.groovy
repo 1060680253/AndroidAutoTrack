@@ -4,8 +4,12 @@ import com.android.build.gradle.api.ApkVariantOutput
 import com.android.build.gradle.api.ApplicationVariant
 import com.android.builder.model.ProductFlavor
 import groovy.json.JsonSlurper
+import net.dongliu.apk.parser.ApkFile
 import net.dongliu.apk.parser.ApkParser
+import net.dongliu.apk.parser.ApkParsers
+import net.dongliu.apk.parser.bean.ApkMeta
 import net.dongliu.apk.parser.bean.Icon
+import net.dongliu.apk.parser.bean.IconFace
 import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpPost
@@ -55,8 +59,17 @@ class FirPlugin implements Plugin<Project> {
         } else {
             versionName = mergedFlavor.versionName + (mergedFlavor.versionNameSuffix ? mergedFlavor.versionNameSuffix : "")
         }
+        System.println("fir.versionName1"+versionName)
         int versionCode = mergedFlavor.versionCode
         String bundleId = mergedFlavor.applicationId
+
+        if(!versionName||versionName=='null'){
+            bundleId = variant.applicationId
+            versionName = variant.generateBuildConfig.versionName
+            versionCode = variant.generateBuildConfig.versionCode
+        }
+
+        System.println("fir.versionName2"+versionName)
         String changeLog = config.changeLog
         String token = config.apiTokens[name == "" ? "main" : name]
 
@@ -65,17 +78,20 @@ class FirPlugin implements Plugin<Project> {
             return
         }
 
-        def firTask = project.tasks.create(name: "fir${name}") << {
+        def firTask = project.tasks.create(name: "fir-loader${name}",description: "打包上传到fir.im",group: "firLoader") << {
             def cert = getCert(bundleId, token)
 
             // 获取要上传的APK
             File apk = variant.outputs
                     .find { variantOutput -> variantOutput instanceof ApkVariantOutput }
                     .outputFile
-            ApkParser apkParser = new ApkParser(apk.absolutePath)
-            List<Icon> iconList = apkParser.getIconFiles()
-            Icon icon = iconList.sort { it.data.length }.last()
-            String appName = apkParser.apkMeta.name
+            ApkFile apkFile = new ApkFile(apk)
+            ApkMeta apkMeta = apkFile.getApkMeta()
+
+            List<IconFace> iconList = apkFile.getAllIcons()
+            IconFace icon = iconList.sort { it.data.length }.last()
+            String appName = apkMeta.name
+            System.println("fir.versionName3"+versionName)
             File iconFile = saveIconFile(icon.data, apk.parent, icon.path.split("/").last())
             if (iconFile == null || !uploadIcon(cert.cert.icon, iconFile)) {
                 LOG.error "Upload ${name} icon [${iconFile}] failed."
@@ -87,8 +103,9 @@ class FirPlugin implements Plugin<Project> {
                 LOG.error "Publish apk Failed!"
             }
         }
-
-        project.tasks.getByPath("assemble${name}Release").dependsOn firTask
+        if(config.attachAssembleRelease==null||config.attachAssembleRelease){
+            project.tasks.getByPath("assemble${name}Release").dependsOn firTask
+        }
         firTask.dependsOn project.tasks.getByPath("package${name}Release")
     }
 
