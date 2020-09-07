@@ -42,9 +42,9 @@ install {
                 }
                 developers {
                     developer {
-                        id 'LeifZhang'    //填写的一些基本信息
+                        id 'ch'    //填写的一些基本信息
                         name nexus_fileName
-                        email 'leifzhanggithub@gmail.com'
+                        email 'cheng1025310276@gmail.com'
                     }
                 }
                 scm {

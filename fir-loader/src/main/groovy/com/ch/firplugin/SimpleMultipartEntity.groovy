@@ -1,4 +1,4 @@
-package com.githang.firplugin
+package com.ch.firplugin
 
 import org.apache.http.Header
 import org.apache.http.HttpEntity

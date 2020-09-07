@@ -1,4 +1,4 @@
-package com.githang.firplugin
+package com.ch.firplugin
 
 class FirPluginExtension {
     String changeLog = ""

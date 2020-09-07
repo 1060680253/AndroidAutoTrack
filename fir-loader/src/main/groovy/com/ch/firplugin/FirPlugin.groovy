@@ -1,14 +1,11 @@
-package com.githang.firplugin
+package com.ch.firplugin
 
 import com.android.build.gradle.api.ApkVariantOutput
 import com.android.build.gradle.api.ApplicationVariant
 import com.android.builder.model.ProductFlavor
 import groovy.json.JsonSlurper
 import net.dongliu.apk.parser.ApkFile
-import net.dongliu.apk.parser.ApkParser
-import net.dongliu.apk.parser.ApkParsers
 import net.dongliu.apk.parser.bean.ApkMeta
-import net.dongliu.apk.parser.bean.Icon
 import net.dongliu.apk.parser.bean.IconFace
 import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
