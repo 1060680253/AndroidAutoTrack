@@ -56,7 +56,6 @@ class FirPlugin implements Plugin<Project> {
         } else {
             versionName = mergedFlavor.versionName + (mergedFlavor.versionNameSuffix ? mergedFlavor.versionNameSuffix : "")
         }
-        System.println("fir.versionName1"+versionName)
         int versionCode = mergedFlavor.versionCode
         String bundleId = mergedFlavor.applicationId
 
@@ -65,8 +64,6 @@ class FirPlugin implements Plugin<Project> {
             versionName = variant.generateBuildConfig.versionName
             versionCode = variant.generateBuildConfig.versionCode
         }
-
-        System.println("fir.versionName2"+versionName)
         String changeLog = config.changeLog
         String token = config.apiTokens[name == "" ? "main" : name]
 
@@ -88,7 +85,6 @@ class FirPlugin implements Plugin<Project> {
             List<IconFace> iconList = apkFile.getAllIcons()
             IconFace icon = iconList.sort { it.data.length }.last()
             String appName = apkMeta.name
-            System.println("fir.versionName3"+versionName)
             File iconFile = saveIconFile(icon.data, apk.parent, icon.path.split("/").last())
             if (iconFile == null || !uploadIcon(cert.cert.icon, iconFile)) {
                 LOG.error "Upload ${name} icon [${iconFile}] failed."
@@ -100,7 +96,7 @@ class FirPlugin implements Plugin<Project> {
                 LOG.error "Publish apk Failed!"
             }
         }
-        if(config.attachAssembleRelease){
+        if(config.attachAssembleRelease==null||config.attachAssembleRelease){
             project.tasks.getByPath("assemble${name}Release").dependsOn firTask
         }
         firTask.dependsOn project.tasks.getByPath("package${name}Release")
