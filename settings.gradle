@@ -1,3 +1,15 @@
+include ':click-debounce-gradle-plugin'
+include ':click-debounce-runtime'
 include ':fir-loader'
 include ':app', ':AutoTrackPlugin', ':testmodule', ':double_tap_plugin'
 include ':BasePlugin'
+
+include ':click-debounce-runtime'
+def initBuildFile(def projects) {
+    projects.each {
+        it.buildFileName = "${it.name}.gradle" - "click-debounce-"
+        initBuildFile(it.children)
+    }
+}
+
+initBuildFile(settings.rootProject.children)

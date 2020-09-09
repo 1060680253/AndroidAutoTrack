@@ -14,6 +14,8 @@
             <option value="$PROJECT_DIR$/AutoTrackPlugin" />
             <option value="$PROJECT_DIR$/BasePlugin" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/click-debounce-gradle-plugin" />
+            <option value="$PROJECT_DIR$/click-debounce-runtime" />
             <option value="$PROJECT_DIR$/double_tap_plugin" />
             <option value="$PROJECT_DIR$/fir-loader" />
             <option value="$PROJECT_DIR$/testmodule" />
